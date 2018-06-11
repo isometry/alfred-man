@@ -4,30 +4,10 @@
 <dict>
 	<key>bundleid</key>
 	<string>net.isometry.alfred.man</string>
+	<key>category</key>
+	<string>Tools</string>
 	<key>connections</key>
 	<dict>
-		<key>63849D71-ED09-48B7-91F4-A095B5C6197F</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>3960E216-DE18-459D-BBCB-6F5A21C4931C</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
-		</array>
-		<key>A6E0B5F8-6AAF-42EE-8A6E-65EF13ED75C9</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>900F4F3B-8516-4BD3-BBE3-BD76DBEAFCC4</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
-		</array>
 		<key>E2389990-4936-4DA7-AA4D-3236223735EA</key>
 		<array>
 			<dict>
@@ -37,13 +17,35 @@
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>3960E216-DE18-459D-BBCB-6F5A21C4931C</string>
+				<key>modifiers</key>
+				<integer>131072</integer>
+				<key>modifiersubtext</key>
+				<string>Open {query} as HTML</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>900F4F3B-8516-4BD3-BBE3-BD76DBEAFCC4</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Open {query} as PDF</string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 	</dict>
 	<key>createdby</key>
 	<string>Robin Breathe</string>
 	<key>description</key>
-	<string>Open man page using x-man-page: protocol or html</string>
+	<string>Open man page using x-man-page: protocol, pdf or html</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -53,66 +55,10 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>escaping</key>
-				<integer>63</integer>
-				<key>script</key>
-				<string>query="{query}"
-
-cache="com.runningwithcrayons.Alfred-2/Workflow Data/net.isometry.alfred.man"
-
-name=${query#*/}
-sect=${query%/*}
-file=$(cd ~/Library/Caches/"$cache"; pwd)/$name\($sect\).pdf
-page=$(man -w -s $sect $name)
-
-if [ "$page" -nt "$file" ]; then
-	man -t -s $sect $name | pstopdf -i -o "$file"
-fi
-
-open "$file"
-</string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>900F4F3B-8516-4BD3-BBE3-BD76DBEAFCC4</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>escaping</key>
-				<integer>63</integer>
-				<key>script</key>
-				<string>query="{query}"
-
-cache="com.runningwithcrayons.Alfred-2/Workflow Data/net.isometry.alfred.man"
-
-name=${query#*/}
-sect=${query%/*}
-file=$(cd ~/Library/Caches/"$cache"; pwd)/$name\($sect\).html
-page=$(man -w -s $sect $name)
-
-if [ "$page" -nt "$file" ]; then
-	groff -Thtml -mandoc -c "$page" &gt; "$file"
-fi
-
-open "$file"
-</string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>3960E216-DE18-459D-BBCB-6F5A21C4931C</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>plusspaces</key>
-				<false/>
+				<key>browser</key>
+				<string></string>
+				<key>spaces</key>
+				<string></string>
 				<key>url</key>
 				<string>x-man-page://{query}</string>
 				<key>utf8</key>
@@ -122,25 +68,81 @@ open "$file"
 			<string>alfred.workflow.action.openurl</string>
 			<key>uid</key>
 			<string>74291A6F-4872-4DDA-823C-F4056C202562</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>63</integer>
+				<key>script</key>
+				<string>query="{query}"
+
+name=${query#*/}
+sect=${query%/*}
+file=${alfred_workflow_cache}/$name\($sect\).html
+page=$(man -w -s $sect $name)
+
+if [ "$page" -nt "$file" ]; then
+	groff -Thtml -mandoc -c "$page" &gt; "$file"
+fi
+
+open "$file"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>3960E216-DE18-459D-BBCB-6F5A21C4931C</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<false/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>escaping</key>
 				<integer>4</integer>
 				<key>keyword</key>
 				<string>man</string>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<false/>
+				<key>queuedelaymode</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
 				<key>runningsubtext</key>
 				<string>Searching whatis database…</string>
 				<key>script</key>
 				<string>from alfredman import complete
 print complete("{query}")</string>
+				<key>scriptargtype</key>
+				<integer>1</integer>
+				<key>scriptfile</key>
+				<string>man.py</string>
+				<key>subtext</key>
+				<string></string>
 				<key>title</key>
 				<string>Open man page</string>
 				<key>type</key>
-				<integer>3</integer>
+				<integer>8</integer>
 				<key>withspace</key>
 				<true/>
 			</dict>
@@ -148,58 +150,42 @@ print complete("{query}")</string>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>E2389990-4936-4DA7-AA4D-3236223735EA</string>
+			<key>version</key>
+			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argumenttype</key>
-				<integer>0</integer>
+				<key>concurrently</key>
+				<false/>
 				<key>escaping</key>
-				<integer>4</integer>
-				<key>keyword</key>
-				<string>hman</string>
-				<key>runningsubtext</key>
-				<string>Searching whatis database…</string>
+				<integer>63</integer>
 				<key>script</key>
-				<string>from alfredman import complete
-print complete("{query}")</string>
-				<key>title</key>
-				<string>Open HTML man page</string>
+				<string>query="{query}"
+
+name=${query#*/}
+sect=${query%/*}
+file=${alfred_workflow_cache}/$name\($sect\).pdf
+page=$(man -w -s $sect $name)
+
+if [ "$page" -nt "$file" ]; then
+	man -t -s $sect $name | pstopdf -i -o "$file"
+fi
+
+open "$file"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
 				<key>type</key>
-				<integer>3</integer>
-				<key>withspace</key>
-				<true/>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>63849D71-ED09-48B7-91F4-A095B5C6197F</string>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argumenttype</key>
-				<integer>0</integer>
-				<key>escaping</key>
-				<integer>4</integer>
-				<key>keyword</key>
-				<string>pman</string>
-				<key>runningsubtext</key>
-				<string>Searching whatis database…</string>
-				<key>script</key>
-				<string>from alfredman import complete
-print complete("{query}")</string>
-				<key>title</key>
-				<string>Open PDF man page</string>
-				<key>type</key>
-				<integer>3</integer>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>A6E0B5F8-6AAF-42EE-8A6E-65EF13ED75C9</string>
+			<string>900F4F3B-8516-4BD3-BBE3-BD76DBEAFCC4</string>
+			<key>version</key>
+			<integer>2</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -207,7 +193,9 @@ print complete("{query}")</string>
 
 The 'man' keyword will open in your default x-man-page: protocol handler (probably Terminal.app).
 
-The 'hman' keyword will open in Safari (change to your preferred browser by tweaking the BROWSER variable at the top of hman Run Script).
+Modifiers:
+ * shift: open locally rendered HTML man page in default browser.
+ * command: open PDF man page in default PDF viewer.
 
 Usage:
 man open(1)  # open a specific page
@@ -218,36 +206,49 @@ man 2 open   # search section 2 for pages with 'open' in the name</string>
 	<dict>
 		<key>3960E216-DE18-459D-BBCB-6F5A21C4931C</key>
 		<dict>
+			<key>note</key>
+			<string>Display as HTML</string>
+			<key>xpos</key>
+			<integer>460</integer>
 			<key>ypos</key>
-			<real>130</real>
-		</dict>
-		<key>63849D71-ED09-48B7-91F4-A095B5C6197F</key>
-		<dict>
-			<key>ypos</key>
-			<real>130</real>
+			<integer>190</integer>
 		</dict>
 		<key>74291A6F-4872-4DDA-823C-F4056C202562</key>
 		<dict>
+			<key>note</key>
+			<string>Display in x-man-page: handler</string>
+			<key>xpos</key>
+			<integer>460</integer>
 			<key>ypos</key>
-			<real>10</real>
+			<integer>30</integer>
 		</dict>
 		<key>900F4F3B-8516-4BD3-BBE3-BD76DBEAFCC4</key>
 		<dict>
+			<key>note</key>
+			<string>Display as PDF</string>
+			<key>xpos</key>
+			<integer>460</integer>
 			<key>ypos</key>
-			<real>250</real>
-		</dict>
-		<key>A6E0B5F8-6AAF-42EE-8A6E-65EF13ED75C9</key>
-		<dict>
-			<key>ypos</key>
-			<real>250</real>
+			<integer>340</integer>
 		</dict>
 		<key>E2389990-4936-4DA7-AA4D-3236223735EA</key>
 		<dict>
+			<key>xpos</key>
+			<integer>230</integer>
 			<key>ypos</key>
-			<real>10</real>
+			<integer>190</integer>
 		</dict>
 	</dict>
+	<key>variables</key>
+	<dict>
+		<key>alfredman_cache_ttl</key>
+		<string>604800</string>
+		<key>alfredman_max_results</key>
+		<string>36</string>
+	</dict>
+	<key>version</key>
+	<string>2.0</string>
 	<key>webaddress</key>
-	<string>https://github.com/isometry/alfredworkflows/tree/master/net.isometry.alfred.man</string>
+	<string>https://github.com/isometry/alfred-man</string>
 </dict>
 </plist>
