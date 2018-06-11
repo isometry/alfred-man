@@ -2,9 +2,9 @@
 
 A workflow for [Alfred](http://www.alfredapp.com/) to rapidly open UNIX man pages in any of traditional Terminal, HTML or PDF format.
 
-![Example 1](https://raw.github.com/isometry/alfred-ssh/master/screenshots/man_example1.png)
+![Example 1](https://raw.github.com/isometry/alfred-man/master/screenshots/man_example1.png)
 
-![Example 2](https://raw.github.com/isometry/alfred-ssh/master/screenshots/man_example2.png)
+![Example 2](https://raw.github.com/isometry/alfred-man/master/screenshots/man_example2.png)
 
 ## Releases
 
