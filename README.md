@@ -15,7 +15,6 @@ A workflow for [Alfred](http://www.alfredapp.com/) to rapidly open UNIX man page
 
 - [Alfred](http://www.alfredapp.com/) (version 3.0+)
 - The [Alfred Powerpack](http://www.alfredapp.com/powerpack/).
-- [man.alfredworkflow](https://raw.github.com/isometry/alfred-man/releases/latest)
 
 ## Usage
 
