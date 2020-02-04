@@ -22,7 +22,7 @@ import alfred
 DEFAULT_MAX_RESULTS = 36
 DEFAULT_CACHE_TTL = 604800
 
-WHATIS_COMMAND = '/usr/libexec/makewhatis -o /dev/stdout `/usr/bin/manpath`'
+WHATIS_COMMAND = '/usr/libexec/makewhatis -o /tmp/makewhatis.tmp $(/usr/bin/manpath)'
 
 def clean_ascii(string):
     return ''.join(i for i in string if ord(i) < 128)
@@ -44,7 +44,12 @@ def fetch_whatis(max_age=DEFAULT_CACHE_TTL):
     cache = cache_file('whatis.1.json')
     if os.path.isfile(cache) and (time() - os.path.getmtime(cache) < max_age):
         return json.load(open(cache, 'r'))
-    raw_pages = subprocess.check_output(WHATIS_COMMAND, shell=True)
+
+    raw_pages = ''
+    if subprocess.check_call(WHATIS_COMMAND, shell=True) == 0:
+        with open('/tmp/makewhatis.tmp', 'r') as f:
+            raw_pages = f.read()
+
     pagelist = map(
         lambda x: map(
             lambda y: y.strip(),
