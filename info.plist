@@ -247,7 +247,7 @@ man 2 open   # search section 2 for pages with 'open' in the name</string>
 		<string>36</string>
 	</dict>
 	<key>version</key>
-	<string>2.0</string>
+	<string>2.1</string>
 	<key>webaddress</key>
 	<string>https://github.com/isometry/alfred-man</string>
 </dict>

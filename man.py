@@ -22,7 +22,7 @@ import alfred
 DEFAULT_MAX_RESULTS = 36
 DEFAULT_CACHE_TTL = 604800
 
-WHATIS_COMMAND = '/usr/libexec/makewhatis -o /dev/stdout `/usr/bin/manpath`'
+WHATIS_COMMAND = '/usr/libexec/makewhatis -o /dev/fd/1 `/usr/bin/manpath`'
 
 def clean_ascii(string):
     return ''.join(i for i in string if ord(i) < 128)
