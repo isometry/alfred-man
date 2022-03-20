@@ -1,12 +1,9 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-man.alfredworkflow, v1.2
-Robin Breathe, 2013-2018
+man.alfredworkflow, v2.2
+Robin Breathe, 2013-2022
 """
-
-from __future__ import unicode_literals
-from __future__ import print_function
 
 import json
 import os
@@ -24,8 +21,6 @@ DEFAULT_CACHE_TTL = 604800
 
 WHATIS_COMMAND = '/usr/libexec/makewhatis -o /dev/fd/1 `/usr/bin/manpath`'
 
-def clean_ascii(string):
-    return ''.join(i for i in string if ord(i) < 128)
 
 def cache_file(filename, volatile=True):
     parent = os.path.expanduser(
@@ -40,17 +35,18 @@ def cache_file(filename, volatile=True):
         raise IOError('No write access: %s' % parent)
     return os.path.join(parent, filename)
 
+
 def fetch_whatis(max_age=DEFAULT_CACHE_TTL):
     cache = cache_file('whatis.1.json')
     if os.path.isfile(cache) and (time() - os.path.getmtime(cache) < max_age):
         return json.load(open(cache, 'r'))
-    raw_pages = subprocess.check_output(WHATIS_COMMAND, shell=True)
+    raw_pages = subprocess.check_output(WHATIS_COMMAND, shell=True).decode('utf-8')
     pagelist = map(
         lambda x: map(
             lambda y: y.strip(),
             x.split(' - ', 1)
         ),
-        clean_ascii(raw_pages).splitlines()
+        raw_pages.splitlines()
     )
     whatis = {}
     for (pages, description) in pagelist:
@@ -59,18 +55,20 @@ def fetch_whatis(max_age=DEFAULT_CACHE_TTL):
     json.dump(whatis, open(cache, 'w'))
     return whatis
 
+
 def fetch_sections(whatis, max_age=DEFAULT_CACHE_TTL):
     cache = cache_file('sections.1.json')
     if os.path.isfile(cache) and (time() - os.path.getmtime(cache) < max_age):
         return set(json.load(open(cache, 'r')))
     sections = set([])
     pattern = re.compile(r'\(([^()]+)\)$')
-    for page in whatis.iterkeys():
+    for page in whatis.keys():
         sre = pattern.search(page)
         if sre:
             sections.add(sre.group(1))
     json.dump(list(sections), open(cache, 'w'))
     return sections
+
 
 def man_arg(manpage):
     pattern = re.compile(r'(.*)\((.+)\)')
@@ -78,22 +76,27 @@ def man_arg(manpage):
     (title, section) = (sre.group(1), sre.group(2))
     return '%s/%s' % (section, title)
 
+
 def man_uri(manpage, protocol='x-man-page'):
     return '%s://%s' % (protocol, man_arg(manpage))
 
+
 def filter_whatis_name(_filter, whatis):
-    return {k: v for (k, v) in whatis.iteritems() if _filter(k)}
+    return {k: v for (k, v) in whatis.items() if _filter(k)}
+
 
 def filter_whatis_description(_filter, whatis):
-    return {k: v for (k, v) in whatis.iteritems() if _filter(v)}
+    return {k: v for (k, v) in whatis.items() if _filter(v)}
+
 
 def result_list(query, whatis):
     return {
         alfred.Item(attributes={'uid': man_uri(page), 'arg': man_arg(page)},
                     title=page, subtitle=description, icon='icon.png')
-        for (page, description) in whatis.iteritems()
+        for (page, description) in whatis.items()
         if fnmatch(page, '%s*' % query)
     }
+
 
 def complete():
     query = sys.argv[1].strip()
@@ -144,6 +147,7 @@ def complete():
         ))
 
     return alfred.xml(results, maxresults=maxresults)
+
 
 if __name__ == '__main__':
     print(complete())

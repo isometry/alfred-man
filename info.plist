@@ -79,12 +79,7 @@
 				<key>escaping</key>
 				<integer>63</integer>
 				<key>script</key>
-				<string>query="{query}"
-
-name=${query#*/}
-sect=${query%/*}
-file=${alfred_workflow_cache}/$name\($sect\).html
-page=$(man -w -s $sect $name)
+				<string>query="{query}" name=${query#*/} sect=${query%/*} file=${alfred_workflow_cache}/$name\($sect\).html page=$(man -w -s $sect $name)
 
 if [ "$page" -nt "$file" ]; then
 	groff -Thtml -mandoc -c "$page" &gt; "$file"
@@ -161,12 +156,7 @@ print complete("{query}")</string>
 				<key>escaping</key>
 				<integer>63</integer>
 				<key>script</key>
-				<string>query="{query}"
-
-name=${query#*/}
-sect=${query%/*}
-file=${alfred_workflow_cache}/$name\($sect\).pdf
-page=$(man -w -s $sect $name)
+				<string>query="{query}" name=${query#*/} sect=${query%/*} file=${alfred_workflow_cache}/$name\($sect\).pdf page=$(man -w -s $sect $name)
 
 if [ "$page" -nt "$file" ]; then
 	man -t -s $sect $name | pstopdf -i -o "$file"
@@ -247,7 +237,7 @@ man 2 open   # search section 2 for pages with 'open' in the name</string>
 		<string>36</string>
 	</dict>
 	<key>version</key>
-	<string>2.1</string>
+	<string>2.2</string>
 	<key>webaddress</key>
 	<string>https://github.com/isometry/alfred-man</string>
 </dict>

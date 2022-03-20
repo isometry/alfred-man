@@ -1,2 +1,2 @@
 all:
-	zip -j9 --filesync man.alfred3workflow  *.{plist,png,py}
+	zip -j9 --filesync man.alfredworkflow  *.{plist,png,py}

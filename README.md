@@ -15,6 +15,7 @@ A workflow for [Alfred](http://www.alfredapp.com/) to rapidly open UNIX man page
 
 - [Alfred](http://www.alfredapp.com/) (version 3.0+)
 - The [Alfred Powerpack](http://www.alfredapp.com/powerpack/).
+- Python 3 (`xcode-select --install` or [Homebrew](https://brew.sh/))
 
 ## Usage
 
@@ -22,8 +23,8 @@ Type `man` in Alfred, optionally followed by the section to which you wish to re
 
 Action modifiers:
 
- - Shift+Enter: open locally rendered HTML man page in default browser.
- - Command+Enter: open PDF man page in default PDF viewer.
+- Shift+Enter: open locally rendered HTML man page in default browser.
+- Command+Enter: open PDF man page in default PDF viewer.
 
 ## Contributions & Thanks
 
