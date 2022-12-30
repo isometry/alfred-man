@@ -57,12 +57,14 @@
 			<dict>
 				<key>browser</key>
 				<string></string>
+				<key>skipqueryencode</key>
+				<false/>
+				<key>skipvarencode</key>
+				<false/>
 				<key>spaces</key>
 				<string></string>
 				<key>url</key>
 				<string>x-man-page://{query}</string>
-				<key>utf8</key>
-				<true/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.openurl</string>
@@ -79,9 +81,13 @@
 				<key>escaping</key>
 				<integer>63</integer>
 				<key>script</key>
-				<string>query="{query}" name=${query#*/} sect=${query%/*} file=${alfred_workflow_cache}/$name\($sect\).html page=$(man -w -s $sect $name)
+				<string>query="{query}"
+name="${query#*/}"
+sect="${query%/*}"
+file="${alfred_workflow_cache}/$name($sect).html"
+page=$(man -w -S "$sect" "$name")
 
-if [ "$page" -nt "$file" ]; then
+if [[ "$page" -nt "$file" ]]; then
 	groff -Thtml -mandoc -c "$page" &gt; "$file"
 fi
 
@@ -107,6 +113,8 @@ open "$file"</string>
 				<false/>
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -114,7 +122,7 @@ open "$file"</string>
 				<key>escaping</key>
 				<integer>4</integer>
 				<key>keyword</key>
-				<string>man</string>
+				<string>{var:keyword}</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -124,7 +132,7 @@ open "$file"</string>
 				<key>queuemode</key>
 				<integer>1</integer>
 				<key>runningsubtext</key>
-				<string>Searching whatis database…</string>
+				<string>Cacheing whatis database…</string>
 				<key>script</key>
 				<string>from alfredman import complete
 print complete("{query}")</string>
@@ -146,7 +154,7 @@ print complete("{query}")</string>
 			<key>uid</key>
 			<string>E2389990-4936-4DA7-AA4D-3236223735EA</string>
 			<key>version</key>
-			<integer>2</integer>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -156,10 +164,14 @@ print complete("{query}")</string>
 				<key>escaping</key>
 				<integer>63</integer>
 				<key>script</key>
-				<string>query="{query}" name=${query#*/} sect=${query%/*} file=${alfred_workflow_cache}/$name\($sect\).pdf page=$(man -w -s $sect $name)
+				<string>query="{query}"
+name="${query#*/}"
+sect="${query%/*}"
+file="${alfred_workflow_cache}/$name($sect).pdf"
+page=$(man -w -S "$sect" "$name")
 
-if [ "$page" -nt "$file" ]; then
-	man -t -s $sect $name | pstopdf -i -o "$file"
+if [[ "$page" -nt "$file" ]]; then
+	man -t -S "$sect" "$name" | pstopdf -i -o "$file"
 fi
 
 open "$file"</string>
@@ -199,45 +211,125 @@ man 2 open   # search section 2 for pages with 'open' in the name</string>
 			<key>note</key>
 			<string>Display as HTML</string>
 			<key>xpos</key>
-			<integer>460</integer>
+			<real>460</real>
 			<key>ypos</key>
-			<integer>190</integer>
+			<real>190</real>
 		</dict>
 		<key>74291A6F-4872-4DDA-823C-F4056C202562</key>
 		<dict>
 			<key>note</key>
 			<string>Display in x-man-page: handler</string>
 			<key>xpos</key>
-			<integer>460</integer>
+			<real>460</real>
 			<key>ypos</key>
-			<integer>30</integer>
+			<real>30</real>
 		</dict>
 		<key>900F4F3B-8516-4BD3-BBE3-BD76DBEAFCC4</key>
 		<dict>
 			<key>note</key>
 			<string>Display as PDF</string>
 			<key>xpos</key>
-			<integer>460</integer>
+			<real>460</real>
 			<key>ypos</key>
-			<integer>340</integer>
+			<real>340</real>
 		</dict>
 		<key>E2389990-4936-4DA7-AA4D-3236223735EA</key>
 		<dict>
 			<key>xpos</key>
-			<integer>230</integer>
+			<real>230</real>
 			<key>ypos</key>
-			<integer>190</integer>
+			<real>190</real>
 		</dict>
 	</dict>
-	<key>variables</key>
-	<dict>
-		<key>alfredman_cache_ttl</key>
-		<string>604800</string>
-		<key>alfredman_max_results</key>
-		<string>36</string>
-	</dict>
+	<key>userconfigurationconfig</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>man</string>
+				<key>placeholder</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string></string>
+			<key>label</key>
+			<string>Keyword</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>keyword</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>604800</string>
+				<key>pairs</key>
+				<array>
+					<array>
+						<string>1 hour</string>
+						<string>3600</string>
+					</array>
+					<array>
+						<string>8 hours</string>
+						<string>28800</string>
+					</array>
+					<array>
+						<string>24 hours</string>
+						<string>86400</string>
+					</array>
+					<array>
+						<string>1 week</string>
+						<string>604800</string>
+					</array>
+					<array>
+						<string>4 weeks</string>
+						<string>235200</string>
+					</array>
+					<array>
+						<string>52 weeks</string>
+						<string>31449600</string>
+					</array>
+				</array>
+			</dict>
+			<key>description</key>
+			<string>Time-to-live for internal man page name cache</string>
+			<key>label</key>
+			<string>Cache TTL</string>
+			<key>type</key>
+			<string>popupbutton</string>
+			<key>variable</key>
+			<string>alfredman_cache_ttl</string>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>default</key>
+				<string>36</string>
+				<key>placeholder</key>
+				<string>Positive integer required</string>
+				<key>required</key>
+				<true/>
+				<key>trim</key>
+				<true/>
+			</dict>
+			<key>description</key>
+			<string>Maximum number of results to return</string>
+			<key>label</key>
+			<string>Max. Results</string>
+			<key>type</key>
+			<string>textfield</string>
+			<key>variable</key>
+			<string>alfredman_max_results</string>
+		</dict>
+	</array>
 	<key>version</key>
-	<string>2.2</string>
+	<string>3.0</string>
 	<key>webaddress</key>
 	<string>https://github.com/isometry/alfred-man</string>
 </dict>

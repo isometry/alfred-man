@@ -9,7 +9,8 @@ A workflow for [Alfred](http://www.alfredapp.com/) to rapidly open UNIX man page
 ## Releases
 
 - [v1.1 for Alfred 2.4+](https://github.com/isometry/alfred-man/releases/tag/v1.1)
-- [v2.x for Alfred 3.1+](https://github.com/isometry/alfred-man/releases/latest)
+- [v2.x for Alfred 3.1+](https://github.com/isometry/alfred-man/releases/tag/v2.2)
+- [v3.x for Alfred 5.0+](https://github.com/isometry/alfred-man/releases/latest)
 
 ## Requirements
 

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-man.alfredworkflow, v2.2
-Robin Breathe, 2013-2022
+man.alfredworkflow, v3.0
+Robin Breathe, 2013-2023
 """
 
 import json
